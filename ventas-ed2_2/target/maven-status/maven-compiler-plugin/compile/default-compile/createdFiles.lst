@@ -1,0 +1,15 @@
+mundo\GestionarInicioSesion.class
+mundo\GestionarUsuario.class
+Conexion\Conectar.class
+com\mycompany\ventas\ed2_2\JakartaRestConfiguration.class
+com\mycompany\ventas\ed2_2\resources\JakartaEE8Resource.class
+servlerts\registrarUsuario.class
+servlerts\SvSesion.class
+mundo\Usuario.class
+mundo\Articulo.class
+servlerts\eliminarArticulo.class
+servlerts\SvEditarUsuario.class
+servlerts\SvEliminarUsuario.class
+servlerts\editarArticulo.class
+servlerts\SvNuevoArticulo.class
+mundo\GestionarArticulo.class
