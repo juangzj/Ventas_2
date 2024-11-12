@@ -61,19 +61,20 @@
                             <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
                         </svg>
                     </button>  
-                    <!-- Botón para abrir el modal de editar -->
-                    <button type="button" class="btn btn-secondary editarArticulo-btn" 
-                            data-bs-toggle="modal" 
-                            data-bs-target="#exampleModalEditar" 
-                            data-id="<%=a.getId()%>"
-                            data-nombre="<%= a.getNombre()%>"
-                            data-descripcion="<%= a.getDescripcion()%>"
-                            data-precio="<%= a.getPrecio()%>"
-                            data-cantidad="<%= a.getCantidad()%>" >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
-                            <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
-                        </svg>
-                    </button>   
+             <button type="button" class="btn btn-secondary editarArticulo-btn" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#exampleModalEditar" 
+                                data-id="<%=a.getId()%>"
+                                data-nombre="<%= a.getNombre()%>"
+                                data-descripcion="<%= a.getDescripcion()%>"
+                                data-precio="<%= a.getPrecio()%>"
+                                data-stock="<%= a.getCantidad()%>"
+                                data-imagenBinarios="<%=imagenBase64%>"
+                                >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                                <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
+                            </svg>
+                        </button>  
                     <!-- Botón para eliminar un artículo -->
                     <button type="button" class="btn btn-danger eliminarArticulo-btn" data-bs-toggle="modal" data-bs-target="#exampleModal" data-id="<%=a.getId()%>">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
@@ -199,48 +200,48 @@
     </div>
   </div>
 </div>
- <!-- Modal Para Editar un articulo-->
-<div class="modal fade" id="exampleModalEditar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <!-- Encabezado oscuro -->
-            <div class="modal-header bg-dark text-white">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Editar</h1>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form action="editarArticulo" method="POST">
-                <div class="modal-body">
-                    <p>¿Estás seguro de que deseas EDITAR el articulo con ID: <span id="articuloIdEditar"></span>?</p>
+  <!-- Modal Para Editar un articulo-->
+                <div class="modal fade" id="exampleModalEditar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
 
-                    <div class="form-group">
-                        <label>Nombre:</label>
-                        <input type="text" name="nombreEditar" id="nombreEditar" class="form-control" placeholder="Ingrese el nombre" autofocus required>
-                    </div><br>
-                    
-                    <div class="form-group">
-                        <label>Descripción:</label>
-                        <input type="text" name="descripcionEditar" id="descripcionEditar" class="form-control" placeholder="Ingrese la descripción" required>
-                    </div><br>
-                    
-                    <div class="form-group">
-                        <label>Precio:</label>
-                        <input type="number" name="precioEditar" id="precioEditar" class="form-control" placeholder="Ingrese el precio" required>
-                    </div><br>
-                    
-                    <div class="form-group">
-                        <label>Cantidad:</label>
-                        <input type="number" name="cantidadEditar" id="cantidadEditar" class="form-control" placeholder="Ingrese la cantidad" required>
-                    </div><br>
-                </div>
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Editar</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form action="editarArticulo" method="POST" enctype="multipart/form-data"  >
+                                <div class="modal-body">
+                                    
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Editar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+                                    <form action="editarArticulo" method="POST" enctype="multipart/form-data" >
+                                        <p>¿Estás seguro de que deseas EDITAR el articulo con ID: <span id="articuloIdEditar"></span>?</p>
+                                        <input type="number" name="idEditar" id="idEditar"  class="form-control" placeholder="Ingrese el nombre" autofocus required  style="display: none;">
+                                        <div class="form-group">
+                                            <label>nombre:</label>
+                                            <input type="text" name="nombreEditar" id="nombreEditar" class="form-control" placeholder="ingrese el nombre" autofocus required >
+                                        </div><br>
+                                        <div class="mb-3">
+                                            <label for="formFile" class="form-label">Selecciona una imagen</label>
+                                            <input class="form-control" type="file" id="formFile" name="imagenEditar" required>
+                                        </div>
+                                            <div class="form-group">
+                                                <label>Descripcion:</label>
+                                                <input type="text" name="descripcionEditar" id="descripcionEditar" class="form-control" placeholder="ingrese la descripcion" required >
+                                            </div><br>
+                                                <div class="form-group">
+                                                <label>Precio:</label>
+                                                <input type="number" name="precioEditar" id="precioEditar" class="form-control" placeholder="ingrese el precio" required >
+                                            </div><br>
+                                                <div class="form-group">
+                                                <label>Stock:</label>
+                                                <input type="number" name="stockEditar" id="stockEditar" class="form-control" placeholder="ingrese la cantidad" required >
+                                            </div><br>
+
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                    <button type="submit" class="btn btn-primary">Editar</button>
+                                                </div>
+                                    </form>
 
 <!--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->                   
 
@@ -332,17 +333,24 @@ $(document).ready(function(){
     // Manejar el evento cuando se hace clic en el enlace de la modal
     $('#exampleModalEditar').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget); // Botón que abrió la modal
+        var id = button.data('id');
         var nombre = button.data('nombre');
         var descripcion = button.data('descripcion');
         var precio = button.data('precio');
-        var cantidad = button.data('cantidad');
+        var stock = button.data('stock');
+        var imagenBinarios = button.data('imagenbinarios'); // La cadena base64 de la imagen
+        var extensionImagen = button.data('extensionimagen'); // La extensión de la imagen (jpg o png)
         
         // Actualizar el contenido de la modal
         var modal = $(this);
         modal.find('#nombreEditar').val(nombre);
         modal.find('#descripcionEditar').val(descripcion);
         modal.find('#precioEditar').val(precio);
-        modal.find('#cantidadEditar').val(cantidad);
+        modal.find('#stockEditar').val(stock);
+        modal.find('#idEditar').val(id);
+        
+         // Asignar la imagen en base64 al atributo src de la etiqueta <img>
+        modal.find('#imagenEditar').attr('src', 'data:image/' + extensionImagen + ';base64,' + imagenBinarios);
     });
 });
 
