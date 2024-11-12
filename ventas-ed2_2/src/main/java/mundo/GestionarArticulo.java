@@ -19,26 +19,28 @@ import java.util.List;
 public class GestionarArticulo {
 
     /**
-     * Metodo para obtener los productos existentes
+     * Método para mostrar los artículos.
      *
-     * @return
+     * @return Lista de objetos Articulo con los datos de cada producto.
      */
     public List<Articulo> obtenerArticulos() {
         List<Articulo> articulos = new ArrayList<>();
         Connection conexion = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
 
         try {
             // Obtener la conexión a la base de datos
             conexion = Conectar.getConexion();
 
-            // SQL para seleccionar todos los artículos
-            String sql = "SELECT id, nombre, descripcion, precio, cantidad_stock FROM articulos";
+            // SQL para seleccionar todos los artículos, incluyendo imagen y nombre de imagen
+            String sql = "SELECT id, nombre, descripcion, precio, cantidad_stock, nombre_imagen, imagen FROM articulos";
 
             // Preparar la sentencia
-            PreparedStatement pstmt = conexion.prepareStatement(sql);
+            pstmt = conexion.prepareStatement(sql);
 
             // Ejecutar la consulta
-            ResultSet rs = pstmt.executeQuery();
+            rs = pstmt.executeQuery();
 
             // Iterar sobre los resultados
             while (rs.next()) {
@@ -48,7 +50,9 @@ public class GestionarArticulo {
                         rs.getString("nombre"),
                         rs.getString("descripcion"),
                         rs.getDouble("precio"),
-                        rs.getInt("cantidad_stock") // Cambia esto a la columna correcta
+                        rs.getInt("cantidad_stock"),
+                        rs.getString("nombre_imagen"),
+                        rs.getBytes("imagen") // Obtener la imagen en bytes
                 );
 
                 // Agregar el artículo a la lista
@@ -56,31 +60,44 @@ public class GestionarArticulo {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace(); // Manejar errores de SQL
+            System.err.println("Error al obtener los artículos: " + e.getMessage());
+            e.printStackTrace(); // Mostrar la traza del error para depuración
         } finally {
-            // Cerrar la conexión
-            if (conexion != null) {
-                try {
-                    conexion.close();
-                } catch (SQLException e) {
-                    e.printStackTrace(); // Manejar errores al cerrar la conexión
+            // Cerrar recursos en el orden inverso a su apertura
+            try {
+                if (rs != null) {
+                    rs.close();
                 }
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+                if (conexion != null) {
+                    conexion.close();
+                }
+            } catch (SQLException e) {
+                System.err.println("Error al cerrar la conexión: " + e.getMessage());
             }
         }
 
         return articulos; // Retornar la lista de artículos
     }
 
+
     /**
      * Metodo para agregar un nuevo producto
      *
-     * @param nombre
-     * @param descripcion
-     * @param precio
-     * @param cantidad
-     * @return
+     * @param nombre El nombre del producto
+     * @param descripcion La descripcion del producto
+     * @param precio El precio del producto
+     * @param cantidad La cantidad en stock
+     * @param nombreImagen El nombre del archivo de imagen
+     * @param imagen La imagen en formato byte[]
+     * @return true si el producto fue agregado exitosamente, false en caso
+     * contrario
      */
-    public boolean agregarProducto(String nombre, String descripcion, double precio, int cantidad) {
+    public boolean agregarProducto(String nombre, String descripcion, double precio, int cantidad, String nombreImagen, byte[] imagen) {
+        
+        System.out.println("l nomrbe de la imagen es: " + nombreImagen);
         boolean productoAgregado = false;
         Connection conexion = null;
         PreparedStatement preparedStatement = null;
@@ -90,7 +107,7 @@ public class GestionarArticulo {
             conexion = Conectar.getConexion();
 
             // Definir la consulta SQL para insertar el producto
-            String sql = "INSERT INTO articulos (nombre, descripcion, precio, cantidad_stock) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO articulos (nombre, descripcion, precio, cantidad_stock, nombre_imagen, imagen) VALUES (?, ?, ?, ?, ?, ?)";
 
             // Preparar la declaración
             preparedStatement = conexion.prepareStatement(sql);
@@ -98,16 +115,17 @@ public class GestionarArticulo {
             preparedStatement.setString(2, descripcion);
             preparedStatement.setDouble(3, precio);
             preparedStatement.setInt(4, cantidad);
+            preparedStatement.setString(5, nombreImagen);
+            preparedStatement.setBytes(6, imagen); // Establecer el campo imagen como byte[]
 
-            // Ejecutar la inserción
-            int filasAfectadas = preparedStatement.executeUpdate();
-            if (filasAfectadas > 0) {
-                productoAgregado = true; // El producto fue agregado exitosamente
-            }
+            // Ejecutar la inserción y verificar si se afectó alguna fila
+            productoAgregado = preparedStatement.executeUpdate() > 0;
+
         } catch (SQLException e) {
-            e.printStackTrace(); // Manejar la excepción
+            System.err.println("Error al agregar el producto: " + e.getMessage());
+            e.printStackTrace();
         } finally {
-            // Cerrar recursos
+            // Cerrar recursos en el orden inverso a su apertura
             try {
                 if (preparedStatement != null) {
                     preparedStatement.close();
@@ -116,15 +134,17 @@ public class GestionarArticulo {
                     conexion.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace(); // Manejar excepción en el cierre
+                System.err.println("Error al cerrar la conexión: " + e.getMessage());
             }
         }
 
         return productoAgregado; // Retornar el resultado de la inserción
     }
 
+
     public GestionarArticulo() {
     }
+    
     /**
      * Metodo para eliminar un articulo segun el id
      *

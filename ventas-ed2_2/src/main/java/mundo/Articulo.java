@@ -16,13 +16,17 @@ public class Articulo {
     private String descripcion;
     private double precio;
     private int cantidad;
+    private String tituloImagen;
+    private byte[] imagen;
 
-    public Articulo(int id, String nombre, String descripcion, double precio, int cantidad) {
+    public Articulo(int id, String nombre, String descripcion, double precio, int cantidad, String tituloImagen, byte[] imagen) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
         this.cantidad = cantidad;
+        this.tituloImagen = tituloImagen;
+        this.imagen = imagen;
     }
 
     public int getId() {
@@ -64,5 +68,22 @@ public class Articulo {
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
+
+    public String getTituloImagen() {
+        return tituloImagen;
+    }
+
+    public void setTituloImagen(String tituloImagen) {
+        this.tituloImagen = tituloImagen;
+    }
+
+    public byte[] getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(byte[] imagen) {
+        this.imagen = imagen;
+    }
+    
 
 }

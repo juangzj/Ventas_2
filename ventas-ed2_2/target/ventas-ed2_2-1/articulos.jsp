@@ -1,3 +1,4 @@
+<%@page import="java.util.Base64"%>
 <%@page import="java.util.List"%>
 <%@page import="mundo.Articulo"%>
 <%@page import="mundo.GestionarArticulo"%>
@@ -17,6 +18,7 @@
             <tr>
                 <th>ID</th>
                 <th>Nombre del Producto</th>
+                <th>Imagen</th>    
                 <th>Descripción</th>
                 <th>Precio</th>
                 <th>Cantidad en Stock</th>
@@ -29,10 +31,17 @@
                 List<Articulo> listaArticulos = gestiona.obtenerArticulos();
                 if (listaArticulos != null) {
                     for (Articulo a : listaArticulos) {
+
+                        String imagenBase64 = "";
+                        if (a.getImagen() != null) {
+                            // Convertimos los bytes en base64 solo si no es null
+                            imagenBase64 = Base64.getEncoder().encodeToString(a.getImagen()).trim();
+                        }
             %>
             <tr>
                 <td><%=a.getId()%></td>  
                 <td><%=a.getNombre()%></td>
+                <td><img src="data:image/png;base64,<%=imagenBase64%>" style="max-width: 100px; max-height: 80px; object-fit: cover;" /></td>
                 <td><%=a.getDescripcion()%></td>
                 <td><%=a.getPrecio()%></td>
                 <td><%=a.getCantidad()%></td>
@@ -95,7 +104,7 @@
             </div>
             <div class="modal-body">
                 <!-- Formulario para agregar un artículo -->
-                <form action="SvNuevoArticulo" method="POST"> 
+                <form action="SvNuevoArticulo" method="POST" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="nombreArticulo" class="form-label">Nombre</label>
                         <input type="text" class="form-control" name="nombreAgregar" required>
@@ -109,9 +118,14 @@
                         <input type="number" class="form-control" name="precioAgregar" step="0.01" required>
                     </div>
                     <div class="mb-3">
-                        <label for="precioArticulo" class="form-label">Cantidad</label>
+                        <label for="cantidadArticulo" class="form-label">Cantidad</label>
                         <input type="number" class="form-control" name="cantidadAgregar" required>
                     </div>
+                    <div class="mb-3">
+                        <label for="formFile" class="form-label">Selecciona una imagen</label>
+                        <input class="form-control" type="file" id="formFile" name="imagenProducto" required>
+                    </div>
+            
                     <!-- Botón verde para agregar alineado a la derecha -->
                     <div class="d-flex justify-content-end">
                         <button type="submit" class="btn btn-success">Agregar</button>
@@ -121,6 +135,7 @@
         </div>
     </div>
 </div>
+
 
 
 <!---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------> 
