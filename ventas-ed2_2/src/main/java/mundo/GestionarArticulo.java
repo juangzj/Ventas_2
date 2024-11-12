@@ -97,7 +97,7 @@ public class GestionarArticulo {
      */
     public boolean agregarProducto(String nombre, String descripcion, double precio, int cantidad, String nombreImagen, byte[] imagen) {
         
-        System.out.println("l nomrbe de la imagen es: " + nombreImagen);
+        System.out.println("El nomrbe de la imagen es: " + nombreImagen);
         boolean productoAgregado = false;
         Connection conexion = null;
         PreparedStatement preparedStatement = null;

@@ -54,7 +54,8 @@
                             data-nombre="<%= a.getNombre()%>"
                             data-descripcion="<%= a.getDescripcion()%>"
                             data-precio="<%= a.getPrecio()%>"
-                            data-cantidad="<%= a.getCantidad()%>" >
+                            data-cantidad="<%= a.getCantidad()%>" 
+                            data-imagenBinarios="<%=imagenBase64%>">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
                             <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
                             <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
@@ -183,6 +184,12 @@
           <input class="form-control" type="text" id="descripcionVer" readonly><br>
           <label for="modalPuntuacion">Cantidad:</label>
           <input class="form-control" type="text" id="cantidadVer" readonly><br>
+          <label for="">Imagen Producto:</label>
+           <div class="row mb-3 text-center">
+          <div class="col-12">
+            <img id="imagenVer" src="" class="img-fluid" style="max-width: 200px; max-height: 150px; object-fit: cover;">
+          </div>
+        </div>
         </form>
       </div>
       <!-- Pie de modal -->
@@ -264,27 +271,33 @@
         });
     });
 </script>
-<!-- Scrip para obtener los datos de un articulo y mostrarlos en el modal -->
+<!-- Script para obtener los datos de un articulo y mostrarlos en el modal -->
 <script>
-    
-    $(document).ready(function(){
-    // Manejar el evento cuando se hace clic en el enlace de la modal
+$(document).ready(function(){
     $('#exampleModalVer').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget); // Botón que abrió la modal
+        var button = $(event.relatedTarget); // Botón que abrió el modal
+        
+        // Extraer datos del botón mediante data-*
         var id = button.data('id');
         var nombre = button.data('nombre');
         var descripcion = button.data('descripcion');
+        var nombreImagen = button.data('nombreimagen'); // El nombre de la imagen
         var precio = button.data('precio');
-        var cantidad = button.data('cantidad');
-        
-        
-        // Actualizar el contenido de la modal
+        var stock = button.data('cantidad');
+        var imagenBinarios = button.data('imagenbinarios'); // La cadena base64 de la imagen
+        var extensionImagen = button.data('extensionimagen'); // La extensión de la imagen (jpg o png)
+
+        // Actualizar el contenido del modal
         var modal = $(this);
         modal.find('#idVer').val(id);
         modal.find('#nombreVer').val(nombre);
         modal.find('#descripcionVer').val(descripcion);
+        modal.find('#nombreImagenVer').val(nombreImagen);
         modal.find('#precioVer').val(precio);
-        modal.find('#cantidadVer').val(cantidad);
+        modal.find('#cantidadVer').val(stock);
+        
+        // Asignar la imagen en base64 al atributo src de la etiqueta <img>
+        modal.find('#imagenVer').attr('src', 'data:image/' + extensionImagen + ';base64,' + imagenBinarios);
     });
 });
 
