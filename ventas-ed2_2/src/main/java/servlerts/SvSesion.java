@@ -43,7 +43,7 @@ public class SvSesion extends HttpServlet {
 
         if (tipoUsuario != null) {
             if (tipoUsuario.equals("Cliente")) {
-                response.sendRedirect("vista-cliente-pricipal.jsp");
+                response.sendRedirect("usuario-ingresado.jsp");
             }
             if (tipoUsuario.equals("Administrador")) {
                 response.sendRedirect("administador-vista.jsp");

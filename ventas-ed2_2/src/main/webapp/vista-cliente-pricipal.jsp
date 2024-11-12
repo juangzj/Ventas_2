@@ -1,3 +1,4 @@
+<%@page import="java.util.Base64"%>
 <%@page import="java.util.List"%>
 <%@page import="mundo.Articulo"%>
 <%@page import="mundo.GestionarArticulo"%>
@@ -18,6 +19,7 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Nombre del Producto</th>
+                <th scope="col">Imagen</th>
                 <th scope="col">Descripción</th>
                 <th scope="col">Precio</th>
                 <th scope="col">Cantidad de Stock</th>
@@ -30,16 +32,19 @@
                 List<Articulo> listaArticulos = gestiona.obtenerArticulos();
 
                 if (listaArticulos != null) {
-
-                    for (Articulo articulo : listaArticulos) {
+                    String imagenBase64 = "";
+                    for (Articulo a : listaArticulos) {
+                    // Convertimos los bytes en base64 solo si no es null
+                            imagenBase64 = Base64.getEncoder().encodeToString(a.getImagen()).trim();
             %>
 
             <tr>
-                <th scope="row"><%= articulo.getId() %></th>
-                <td><%= articulo.getNombre()%></td>
-                <td><%= articulo.getDescripcion()%></td>
-                <td class="text-success"><%= articulo.getPrecio()%></td>
-                <td class="text-success"><%= articulo.getCantidad()%></td>
+          <td><%=a.getId()%></td>  
+                <td><%=a.getNombre()%></td>
+                <td><img src="data:image/png;base64,<%=imagenBase64%>" style="max-width: 100px; max-height: 80px; object-fit: cover;" /></td>
+                <td><%=a.getDescripcion()%></td>
+                <td><%=a.getPrecio()%></td>
+                <td><%=a.getCantidad()%></td>
                 <td>
                     <a href="index.jsp" class="btn custom-btn btn-sm">Ingresar y comprar</a>
                 </td>
