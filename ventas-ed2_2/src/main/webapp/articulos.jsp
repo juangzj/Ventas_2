@@ -222,7 +222,7 @@
                                         </div><br>
                                         <div class="mb-3">
                                             <label for="formFile" class="form-label">Selecciona una imagen</label>
-                                            <input class="form-control" type="file" id="formFile" name="imagenEditar" required>
+                                            <input class="form-control" type="file" id="formFile" name="imagenEditar" >
                                         </div>
                                             <div class="form-group">
                                                 <label>Descripcion:</label>

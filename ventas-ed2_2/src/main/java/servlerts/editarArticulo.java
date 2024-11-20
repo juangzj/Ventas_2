@@ -40,6 +40,8 @@ public class editarArticulo extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        // Obtener los parámetros de la solicitud
         String idProducto = request.getParameter("idEditar");
         String nombre = request.getParameter("nombreEditar");
         String descripcion = request.getParameter("descripcionEditar");
@@ -47,28 +49,30 @@ public class editarArticulo extends HttpServlet {
         String cantidad = request.getParameter("stockEditar");
         Part imagen = request.getPart("imagenEditar");
 
-        // Imprimir para verificar que las variables están llegando
-        System.out.println("ID Producto: " + idProducto);
-        System.out.println("Nombre: " + nombre);
-        System.out.println("Descripción: " + descripcion);
-        System.out.println("Precio: " + precio);
-        System.out.println("Cantidad: " + cantidad);
-        System.out.println("Imagen: " + (imagen != null ? "Imagen recibida" : "Imagen no recibida"));
-        
-        if (idProducto != null && nombre != null && descripcion != null && precio != null && cantidad != null && imagen != null) {
+        // Inicializar variables para la imagen
+        byte[] datosImagen = null;
+        String nombreImagen = null;
 
-            //Obtenemos el nombre de la imagen
-            String nombreImagen = Paths.get(imagen.getSubmittedFileName()).getFileName().toString();
-
-            //Obtenemos los bytes de la imagen
-            byte[] datosImagen;
+        // Verificar si se ha cargado una nueva imagen
+        if (imagen != null && imagen.getSize() > 0) {
+            // Obtener los datos de la imagen
             try (InputStream inputStream = imagen.getInputStream()) {
                 datosImagen = inputStream.readAllBytes();
             }
-
-            gestiona.actualizarArticulo(Integer.parseInt(idProducto), nombre, descripcion, Double.parseDouble(precio), Integer.parseInt(cantidad), nombreImagen, datosImagen);
+            // Obtener el nombre de la imagen
+            nombreImagen = Paths.get(imagen.getSubmittedFileName()).getFileName().toString();
         }
 
+        // Actualizar artículo con o sin imagen
+        if (datosImagen == null) {
+            gestiona.editarArticulo(Integer.parseInt(idProducto), nombre, descripcion,
+                    Double.parseDouble(precio), Integer.parseInt(cantidad));
+        } else {
+            gestiona.actualizarArticulo(Integer.parseInt(idProducto), nombre, descripcion,
+                    Double.parseDouble(precio), Integer.parseInt(cantidad), nombreImagen, datosImagen);
+        }
+
+        // Redirigir después de la actualización
         response.sendRedirect("articulos.jsp");
     }
 
